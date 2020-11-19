@@ -9,28 +9,36 @@ const f8 = '   ';       // false
 const f9 = '';          // false
 const f10 = ' . 5 ';    // false ( Notice - a space between the dot and 5)
 
-const f11 = '1e';       // false ( in case you need 'e' to be allowed then we need to avoid this method Number(f11)
+const f11 = '1e';       // false
+
 
 const t1 = '0.5';       // true
 const t2 = '2.5';       // true
-const t3 = "025";       // true
-const t4 = "100";       // true
+const t3 = '025';       // true
+const t4 = '100';       // true
+const t5 = '1e10';      // true ( in case you need 'e' to be prevented then pass isAllowedE = false
+const t6 = '0x12';      // true ( in case you need 'x' to be prevented then pass isAllowedX = false
 
 const itDepends1 = '.5';        // false , true if point is allowed to be at first
 const itDepends2 = ' .5';       // false if spaces are prevented, true if spaces are allowed
 const itDepends3 = ' .5  ';     // false if spaces are prevented, true if spaces are allowed
 const itDepends4 = '  5';       // false if spaces are prevented, true if spaces are allowed
-
+const itDepends5 = '   2e63';   // false if spaces are prevented, true if spaces and E are allowed
+const itDepends6 = Infinity;    // false if Infinity is prevented, true if isAllowedInfinity = true
 
 
 /*
     Do not allow numbers that include 'e'
 */
-function isNumber(n, isAllowedSpaces = true, isAllowedNumWithPointFirst = true) { 
+function isNumber(n, isAllowedSpaces = true, isAllowedNumWithPointFirst = true, isAllowedE = true, isAllowedX = true, isAllowedInfinity = false) { 
 
     /******** Step-1 ********/
     n = n || null; // To deal with undefined
     if(!n){
+        return false;
+    }
+
+    if(!isAllowedInfinity && !isFinite(n)){ // if allowed Infinity => true, otherwise => false 
         return false;
     }
 
@@ -53,6 +61,15 @@ function isNumber(n, isAllowedSpaces = true, isAllowedNumWithPointFirst = true) 
         if(!isAllowedSpaces && n.includes(' ')){ // If user don't need any space to be allowed the return false;
             return false;
         }
+
+        if(!isAllowedE && n.includes('e')){
+            return false;
+        }
+
+        if(!isAllowedX && n.includes('x')){
+            return false;
+        }
+        
 
         if(!isAllowedNumWithPointFirst){ // this mean we must return false for cases like '.5', '   .5'
             n = parseInt(n, 10);
