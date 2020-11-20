@@ -50,26 +50,33 @@ function isNumber(n, customOptions) {
         isAllowedInfinity: false,
         isAllowedNumWithPointFirst: true, 
     };
-    const options = Object.assign(defaultOptions, customOptions);
+    const options = Object.assign(defaultOptions, customOptions); // Instead of doing this foreach object attribute => options.isAllowedSpaces = customOptions.isAllowedSpaces || defaultOptions.isAllowedSpaces;
 
-
+    /******** Step-1 ********/
     n = n || null; // To deal with undefined
     if(!n){
         return false;
     }
 
-    if(!options.isAllowedInfinity && !isFinite(n)){
+    if(!options.isAllowedInfinity && !isFinite(n)){ // If Infinity number is allowed  => true, otherwise => false 
         return false;
     }
 
-   
+    /******** Step-2 ********/
+    // To avoid problems with isNaN(false) which returns false and isNaN(true) returns false, but false and true values are not numbers, so convert them to string, and then use isNaN method to make them fail
+    // Notice Number(false) will give us 0, and Number(true) will give us 1, so we must not allow this
+    // Thus, let's convert the number to a string
     n = "" + n;
     if(isNaN(n)){
         return false;
     }
 
-    
-    if(typeof n == 'string'){
+    /******** Step-3 ********/
+    // parseInt('', 10)       // NaN
+    // parseInt('   ', 10)    // NaN
+    // parseInt('   5', 10);  // NaN
+    // parseInt('   .5', 10); // 5
+    if(typeof n == 'string'){ // To deal with spaces, trim all spaces by using parseInt
 
         if(!options.isAllowedSpaces && n.includes(' ')){ // If user don't need any space to be allowed the return false;
             return false;
@@ -101,13 +108,27 @@ function isNumber(n, customOptions) {
         } */ 
     }
     
-    const num = Number(n); 
+    /******** Step-4 ********/
+    const num = Number(n); // Number('543$') => NaN, Number('$53455') => NaN, Number('53455e') => NaN, Number('.53455.) => NaN,
+                           // Number('.') => NaN, Number('(5)') => NaN, Number('543...') => NaN, Number({}) => NaN
+                           // Number(undefined) => NaN, Number('false') => NaN
+
+                           // Number('543') => 543, Number('543.') => 543, Number('543.0') => 543, 
+                           // Number('543.01') => 543.01, Number('.53455') => 0.53455
+                           // Number(+1) => 1, Number(-1) => -1
+
+                           /** Problematic values are the following **/
+                           // Number('') => 0, Number() => 0, Number(null) => 0, Number(false) => 0, Number('  ') => 0
+                           // Number([]) => 0
+                           // Number(true) => 1,
+                           // Number(" \u00A0   \t\n\r") // 0
     if(isNaN(num)){
         return false;
     }
 
     return true;
 }
+
 
 
 

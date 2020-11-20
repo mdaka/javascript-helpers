@@ -6,13 +6,15 @@
 
     defaultOptions = { 
         isAllowedE: true, 
-        isAllowedX: true, 
+        isAllowedHex: true, 
         isAllowedSpaces: true, 
         isAllowedInfinity: false,
         isAllowedNumWithPointFirst: true, 
     };
 ```
-
+### Options
+- isAllowedHex: is hex numbers are allowed, like '0x1'
+- isAllowedSpaces: true, will let the string number contains spaces, valid numbers ['  5', '   2e63', ' .5']
 # Examples
 ```js
     isNumber(null);        // false
@@ -49,3 +51,8 @@
     isNumber('   2e63');   // false if spaces are prevented, true if spaces and E are allowed
     isNumber(Infinity);    // false if Infinity is prevented, true if isAllowedInfinity = true
 ```
+
+
+## License
+
+The MIT License (MIT). Please see [License File](LICENSE.md) for more information.
