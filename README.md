@@ -13,8 +13,12 @@
     };
 ```
 ### Options
-- isAllowedHex: is hex numbers are allowed, like '0x1'
-- isAllowedSpaces: true, will let the string number contains spaces, valid numbers ['  5', '   2e63', ' .5']
+- isAllowedE - Do you need the string number to allow including 'e' character? ('e' stands for exponential)
+- isAllowedHex - Is hex number allowed?, like '0x1'
+- isAllowedSpaces - If true then it let the string number contains spaces, example of valid numbers would be ['  5', '   2e63', ' .5']
+- isAllowedInfinity - If you consider this value 'Infinity' as valid number, then set this option to true
+- isAllowedNumWithPointFirst - if this value '.5' is considered as valid, then set this option to true
+
 # Examples
 ```js
     isNumber(null);        // false
