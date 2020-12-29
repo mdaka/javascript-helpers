@@ -115,3 +115,7 @@ const  status1 =  isNumber(itDepends3, {isAllowedSpaces: true,  isAllowedNumWith
 const  status2 =  isNumber(itDepends3, {isAllowedSpaces: false, isAllowedNumWithPointFirst: true}  );
 const  status3 =  isNumber(itDepends3, {isAllowedSpaces: false, isAllowedNumWithPointFirst: false} );
 const  status4 =  isNumber(itDepends3, {isAllowedSpaces: true,  isAllowedNumWithPointFirst: false} );
+
+
+
+module.exports = isNumber;
